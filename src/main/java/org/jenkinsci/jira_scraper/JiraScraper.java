@@ -128,7 +128,7 @@ public class JiraScraper {
      */
     public void removeDefaultAssignee(String projectId, String component, AssigneeType assignee) throws IOException {
         Component c = getComponent(getBasicComponent(projectId, component));
-        ComponentInput ci = new ComponentInput(component,c.getDescription(),null,assignee);
+        ComponentInput ci = new ComponentInput(component,c.getDescription(),null,AssigneeType.PROJECT_DEFAULT);
         restClient.getComponentClient().updateComponent(c.getSelf(), ci, pm);
     }
     
@@ -143,6 +143,11 @@ public class JiraScraper {
         Component c = getComponent(getBasicComponent(projectId, component));
         ComponentInput ci = new ComponentInput(component,description,c.getLead().getName(), AssigneeType.COMPONENT_LEAD);
         restClient.getComponentClient().updateComponent(c.getSelf(), ci, pm);
+    }
+    
+    public Component getComponentInfo(String projectId, String component) throws IOException {
+        Component c = getComponent(getBasicComponent(projectId, component));
+        return restClient.getComponentClient().getComponent(c.getSelf(), pm);
     }
     
     // test
